@@ -56,15 +56,30 @@ MySQL is a relational database management system(RDBMS) that makes use of SQL La
     );
 ```
 ---
-## Create/Insert into Database
+## CREATE
+### Insert into Database table
 ```bash
     INSERT INTO customers(firstName, lastName, email, city, state) VALUES ("John", "Tolu", "Tolu@gmail.com", "Surulere", "Lagos");
 ```
----
-## INSERT MANY
+ *You could also INSERT MANY into the database table*
 ```bash
     INSERT INTO customers(firstName, lastName, email, city, state, zipCode) VALUES ("Coded", "Hola", "codedhola@gmail.com", "Surulere", "Lagos", "100001"), ("Shola", "Dave", "dave@gmail.com", "bariga", "Lagos", "100002");
 ```
 ---
-
-
+## READ
+### Select from database table
+```bash
+    SELECT * FROM customers 
+```
+---
+## UPDATE
+### Update data in dtabase table
+```bash
+    UPDATE customers SET email = "codeboss@gmail.com" where id = 2;
+```
+---
+## DELETE 
+### Delete data from database Table
+```bash
+    DELETE FROM customers WHERE id = 2;
+```
