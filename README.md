@@ -23,6 +23,7 @@ MySQL is a relational database management system(RDBMS) that makes use of SQL La
 ```
 ---
 ### Create a table 
+note: a Table can have only One primary key
 ```bash
     CREATE TABLE test(
     id INT NOT NULL AUTO_INCREMENT,
@@ -37,9 +38,8 @@ MySQL is a relational database management system(RDBMS) that makes use of SQL La
     DROP TABLE test;
 ```
 ---
-## NOW LET"S CREATE A NEW DATABASE AND TABLE TO  PERFORM CRUD OPERATION
-
-### Create database and table
+## *CRUD OPERATION*
+NOW LET"S CREATE A NEW DATABASE AND TABLE
 
 ```bash
     CREATE DATABASE productify;
@@ -83,3 +83,46 @@ MySQL is a relational database management system(RDBMS) that makes use of SQL La
 ```bash
     DELETE FROM customers WHERE id = 2;
 ```
+---
+## ALTER TABLE
+Add column 'age' to an existing Table schema with "INT" data type
+```bash
+    ALTER TABLE customers 
+    ADD age INT;
+```
+
+Delete a Column from a  Table
+```bash
+    ALTER TABLE customers DROP height;
+```
+Add a Primary key to a Table
+*note: you can only have a single primary key in a table*
+```bash
+    ALTER TABLE customers
+    ADD PRIMARY KEY (id);
+```
+Remove a Primary key from a table
+```bash
+    ALTER TABLE table_name
+    DROP PRIMARY KEY;
+```
+---
+## FOREIGN KEYS
+**Before we start the concept of 'FOREIGN KEYS' we need to create another table that would reference another**
+*Lets create a review table for customers*
+```bash
+    CREATE TABLE reviews(
+        id INT AUTO_INCREMENT NOT NULL,
+        stars INT,
+        comment VARCHAR(255),
+        userID INT NOT NULL,
+        PRIMARY KEY(id),
+        FOREIGN KEY(userID) REFERENCES customers(id)
+);
+```
+**NOTE: We created it own primary key and also a 'userID' which we added as a FOREIGN KEY and also referrence to 'customers' Table**
+
+```bash
+    INSERT INTO reviews(stars, comment, userID) VALUES(4, "Loving it", 3);
+```
+
