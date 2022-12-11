@@ -275,3 +275,48 @@ Aliases could also be used as tables and columns
     SELECT o.id, o.orderDate, c.firstName, c.email
     FROM customers AS c, orders AS o
 ```
+
+## CALCS && AGGREGATION
+**We could also do some calculations in sql**
+Get average age
+```bash
+    SELECT AVG(age) FROM customers;
+```
+
+Count Age
+```bash 
+    SELECT COUNT(age) FROM customers;
+```
+Max Age
+```bash 
+    SELECT MAX(age) FROM customers;
+```
+MIN Age
+```bash 
+    SELECT MIN(age) FROM customers;
+```
+SUM Age
+```bash 
+    SELECT SUM(age) FROM customers;
+```
+AGGREGATE
+```bash
+    SELECT age, COUNT(age)
+    FROM customers 
+    WHERE age > 30
+    GROUP BY age;
+```
+This code returns the age of number of people greater or equal to 2
+```bash
+    SELECT age, COUNT(age)
+    FROM customers 
+    WHERE age > 30
+    GROUP BY age
+    HAVING COUNT(age) >= 2;
+```
+CASING
+The UCASE function returns an uppercase while the LCASE function returns a lowercase
+```bash
+    SELECT LCASE(firstName), UCASE(lastName) FROM customers;
+```
+
