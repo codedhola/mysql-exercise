@@ -91,6 +91,11 @@ Add column 'age' to an existing Table schema with "INT" data type
     ALTER TABLE customers 
     ADD age INT;
 ```
+Modify a Table
+```bash
+    ALTER TABLE customers
+    MODIFY COLUMN review VARCHAR(240);
+```
 
 Delete a Column from a  Table
 ```bash
@@ -220,4 +225,34 @@ put indexes on column that are search often and not on every column*
 );
 ```
 
+## JOIN 
+*INNER JOIN*
+```bash
+    SELECT customers.firstName, customers.email, orders.orderDate, orders.orderNumber
+    FROM customers INNER JOIN orders
+    ON customers.id = orders.customerID
+    ORDER BY customers.email;
+```
+*LEFT JOIN*
+```bash
+    SELECT products.name, products.price, orders.orderDate, orders.orderNumber
+    FROM products LEFT JOIN orders
+    ON products.id = orders.customerID
+    ORDER BY products.price;
+```
+*RIGHT JOIN*
+```bash
+    SELECT products.name, products.price, orders.orderDate, orders.orderNumber
+    FROM products RIGHT JOIN orders
+    ON products.id = orders.customerID
+    ORDER BY products.price;
+```
 
+*MULTIPLE JOINS*
+```bash
+    SELECT products.name, products.price, orders.orderDate, customers.firstName, customers.email, customers.city 
+    FROM orders INNER JOIN products
+    ON orders.productID = products.id
+    INNER JOIN customers
+    ON orders.customerID = customers.id;
+```
