@@ -256,3 +256,22 @@ put indexes on column that are search often and not on every column*
     INNER JOIN customers
     ON orders.customerID = customers.id;
 ```
+
+## ALIASES
+Aliases are used to give tables or columns temporary name to make them more readable 
+```bash 
+    SELECT firstName AS "first name" lastName AS "last name" FROM customers;
+```
+
+To combine columns we use the CONCAT()
+
+```bash
+    SELECT CONCAT(firstName," ", lastName) 
+    AS "Name", city, state FROM customers;
+```
+Aliases could also be used as tables and columns
+
+```bash
+    SELECT o.id, o.orderDate, c.firstName, c.email
+    FROM customers AS c, orders AS o
+```
