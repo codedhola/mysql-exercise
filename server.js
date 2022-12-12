@@ -3,16 +3,26 @@ const {bookRoutes} = require("./routes/bookRoute")
 const {userRoutes} = require("./routes/userRoute")
 
 const server = http.createServer((req, res) => {
+    
+    bookRoutes(req, res) // BOOK ROUTES
+    
+    userRoutes(req, res) // USER ROUTES
 
-    bookRoutes(req, res)
+    if(req.url === "/api"){
+        res.writeHead(404, { "Content-Type": "application/json"})
+        res.end(JSON.stringify({
+            status: "Failed",
+            message: "please navigate to '/api/books' or /api/users/login''" 
+        }))
+    }else{
+        res.writeHead(404, { "Content-Type": "application/json"})
+        res.end(JSON.stringify({
+            status: "Failed",
+            message: "Resource your are trying to get doesn't exist yet" 
+        }))
+    }
 
-    userRoutes(req, res)
-    console.log(req.url)
-    res.writeHead(200, { "Content-Type": "application/json"})
-    res.end(JSON.stringify({
-        status: "Success",
-        message: "working on routing"
-    }))
+    console.log(req.url, req.method)
 })
 
 const PORT = 8080;
