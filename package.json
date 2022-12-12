@@ -1,0 +1,24 @@
+{
+  "name": "mysql-exercise",
+  "version": "1.0.0",
+  "description": "MySql playground to practise sql",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codedhola/mysql-exercise.git"
+  },
+  "keywords": [
+    "sql",
+    "mysql",
+    "nodejs"
+  ],
+  "author": "coded-hola",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codedhola/mysql-exercise/issues"
+  },
+  "homepage": "https://github.com/codedhola/mysql-exercise#readme"
+}
