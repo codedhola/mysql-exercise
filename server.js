@@ -34,14 +34,49 @@ const server = http.createServer((req, res) => {
             status: "Failed",
             message: "please navigate to '/api/books' or /api/users/login''" 
         }))
-    }else if(req.url === "/createDB"){
-        let sql = "CREATE DATABASE my_sql_exercise"
+    }
+
+
+
+    // else if(req.url === "/createDB"){
+    //     let sql = "CREATE DATABASE my_sql_exercise"
+    //     connection.query(sql, (err, result) => {
+    //         if(err) throw error
+    //         console.log(result)
+    //         res.end("Database Created succesfully");
+    //     })
+    // }
+
+    else if(req.url === "/createTable"){
+        let sql = "CREATE TABLE books(id INT NOT NULL AUTO_INCREMENT, name VARCHAR(75) NOT NULL, author VARCHAR(50), genre VARCHAR(50), price INT NOT NULL, primary key(id));"
         connection.query(sql, (err, result) => {
-            if(err) throw error
+            if(err) throw err
             console.log(result)
-            res.end("Database Created succesfully");
+            res.end("Table Created");
         })
     }
+
+    else if(req.url === "/createBook"){
+        const body = { name: "Harry potter", author: "J.K Rowling", genre: "Magic", price: 80}
+        let sql = "INSERT INTO books SET ?"
+        connection.query(sql, body, (err, result) => {
+            if(err) throw err
+            console.log(result)
+            res.end("posted book")
+        })
+    }
+
+    else if(req.url === "/editBook"){
+        const body = { name: "Harry potter", author: "J.K Rowling", genre: "Magic", price: 80}
+        let sql = "UPDATE books SET ?"
+        connection.query(sql, body, (err, result) => {
+            if(err) throw err
+            console.log(result)
+            res.end("posted book")
+        })
+    }
+
+
     else{
         res.writeHead(404, { "Content-Type": "application/json"})
         res.end(JSON.stringify({
