@@ -7,24 +7,24 @@ MySQL is a relational database management system(RDBMS) that makes use of SQL La
 
 ---
 ### Create Database
-```bash
+```sql
     CREATE DATABASE test;
 ```
 ---
 ### Delete Database
-```bash
+```sql
     DROP DATABASE test;
 ```
 ---
 ### Use Database
-```bash
+```sql
     CREATE DATABASE test1;
     USE test1
 ```
 ---
 ### Create a table 
 note: a Table can have only One primary key
-```bash
+```sql
     CREATE TABLE test(
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(50),
@@ -34,14 +34,14 @@ note: a Table can have only One primary key
 ```
 ---
 ### Delete a table 
-```bash
+```sql
     DROP TABLE test;
 ```
 ---
 ## *CRUD OPERATION*
 NOW LET"S CREATE A NEW DATABASE AND TABLE
 
-```bash
+```sql
     CREATE DATABASE productify;
     use productify;
     CREATE TABLE customers(
@@ -58,57 +58,57 @@ NOW LET"S CREATE A NEW DATABASE AND TABLE
 ---
 ## CREATE
 ### Insert into Database table
-```bash
+```sql
     INSERT INTO customers(firstName, lastName, email, city, state) VALUES ("John", "Tolu", "Tolu@gmail.com", "Surulere", "Lagos");
 ```
  *You could also INSERT MANY into the database table*
-```bash
+```sql
     INSERT INTO customers(firstName, lastName, email, city, state, zipCode) VALUES ("Coded", "Hola", "codedhola@gmail.com", "Surulere", "Lagos", "100001"), ("Shola", "Dave", "dave@gmail.com", "bariga", "Lagos", "100002");
 ```
 ---
 ## READ
 ### Select from database table
-```bash
+```sql
     SELECT * FROM customers 
 ```
 
 ---
 ## UPDATE
 ### Update data in dtabase table
-```bash
+```sql
     UPDATE customers SET email = "codeboss@gmail.com" where id = 2;
 ```
 ---
 ## DELETE 
 ### Delete data from database Table
-```bash
+```sql
     DELETE FROM customers WHERE id = 2;
 ```
 ---
 ## ALTER TABLE
 Add column 'age' to an existing Table schema with "INT" data type
-```bash
+```sql
     ALTER TABLE customers 
     ADD age INT;
 ```
 Modify a Table
-```bash
+```sql
     ALTER TABLE customers
     MODIFY COLUMN review VARCHAR(240);
 ```
 
 Delete a Column from a  Table
-```bash
+```sql
     ALTER TABLE customers DROP height;
 ```
 Add a Primary key to a Table
 *note: you can only have a single primary key in a table*
-```bash
+```sql
     ALTER TABLE customers
     ADD PRIMARY KEY (id);
 ```
 Remove a Primary key from a table
-```bash
+```sql
     ALTER TABLE table_name
     DROP PRIMARY KEY;
 ```
@@ -116,7 +116,7 @@ Remove a Primary key from a table
 ## FOREIGN KEYS
 **Before we start the concept of 'FOREIGN KEYS' we need to create another table that would reference another**
 *Lets create a review table for customers*
-```bash
+```sql
     CREATE TABLE reviews(
         id INT AUTO_INCREMENT NOT NULL,
         stars INT,
@@ -129,13 +129,13 @@ Remove a Primary key from a table
 **NOTE: We created it own primary key and also a 'userID' which we added as a FOREIGN KEY and also referrence to 'customers' Table**
 *The referrence will return error if not found in thee database*
 
-```bash
+```sql
     INSERT INTO reviews(stars, comment, userID) VALUES(4, "Loving it", 3);
 ```
 --- 
 ## SELECT QUERYING
 **We could select the list we want to retrieve by specifying after the 'SELECT' statement and also choose the order we want with 'ORDER BY' statement** 
-```bash
+```sql
     SELECT firstName, email FROM customers ORDER BY id ASC;
 ```
 
@@ -143,19 +143,19 @@ Remove a Primary key from a table
 
 **To select unique names or value from the database, we use the 'DISTINCT' after the 'SELECT'  statement**
 
-```bash 
+```sql 
     SELECT DISTINT city FROM customers;
 ```
 *This select unique 'city' without repitition* 
 **The 'WHERE' CLAUSE IS BE USED MOSTLY USED TO FILTER SELECTION**
 
-```bash
+```sql
     SELECT * FROM customers
     WHERE age < 20;
 ```
 *This selects only customers with age less than 20 years old another example is using wildcard 'like'*
 
-```bash 
+```sql 
     SELECT * FROM customers
     WHERE firstName LIKE '%co%';
 ```
@@ -163,25 +163,25 @@ Remove a Primary key from a table
 
 **OR - AND**
 
-```bash
+```sql
     SELECT * FROM customers
     WHERE firstName LIKE '%co%' OR age > 18;
 ```
 
-```bash 
+```sql 
     SELECT * FROM customers
     WHERE firstName LIKE '%o%' AND age > 18;
 ```
 **BETWEEN**
 
-```BASH
+```sql
     SELECT * FROM customers
     WHERE age BETWEEN 19 AND 20;
 ```
 
 **IN**
 
-```bash
+```sql
     SELECT * FROM customers 
     WHERE city IN ("surulere" "yaba");
 ```
@@ -192,18 +192,18 @@ Remove a Primary key from a table
 put indexes on column that are search often and not on every column*
 
 **Create Index**
-```bash
+```sql
     CREATE INDEX cIndex ON customers(email);
 ```
 
 **Delete an index**
-```bash
+```sql
     DROP INDEX cIndex ON emails
 ```
 
 ## REFERNCES 
 
-```bash
+```sql
     CREATE TABLE orders (
         id INT NOT NULL AUTO_INCREMENT,
         orderNumber INT,
@@ -216,7 +216,7 @@ put indexes on column that are search often and not on every column*
 );
 ```
 
-```bash 
+```sql 
     CREATE TABLE products (
 	id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(70),
@@ -227,21 +227,21 @@ put indexes on column that are search often and not on every column*
 
 ## JOIN 
 *INNER JOIN*
-```bash
+```sql
     SELECT customers.firstName, customers.email, orders.orderDate, orders.orderNumber
     FROM customers INNER JOIN orders
     ON customers.id = orders.customerID
     ORDER BY customers.email;
 ```
 *LEFT JOIN*
-```bash
+```sql
     SELECT products.name, products.price, orders.orderDate, orders.orderNumber
     FROM products LEFT JOIN orders
     ON products.id = orders.customerID
     ORDER BY products.price;
 ```
 *RIGHT JOIN*
-```bash
+```sql
     SELECT products.name, products.price, orders.orderDate, orders.orderNumber
     FROM products RIGHT JOIN orders
     ON products.id = orders.customerID
@@ -249,7 +249,7 @@ put indexes on column that are search often and not on every column*
 ```
 
 *MULTIPLE JOINS*
-```bash
+```sql
     SELECT products.name, products.price, orders.orderDate, customers.firstName, customers.email, customers.city 
     FROM orders INNER JOIN products
     ON orders.productID = products.id
@@ -259,19 +259,19 @@ put indexes on column that are search often and not on every column*
 
 ## ALIASES
 Aliases are used to give tables or columns temporary name to make them more readable 
-```bash 
+```sql 
     SELECT firstName AS "first name" lastName AS "last name" FROM customers;
 ```
 
 To combine columns we use the CONCAT()
 
-```bash
+```sql
     SELECT CONCAT(firstName," ", lastName) 
     AS "Name", city, state FROM customers;
 ```
-Aliases could also be used as tables and columns
+Aliases could also be used as tables and columns Just Like 'JOIN'
 
-```bash
+```sql
     SELECT o.id, o.orderDate, c.firstName, c.email
     FROM customers AS c, orders AS o
 ```
@@ -279,35 +279,35 @@ Aliases could also be used as tables and columns
 ## CALCS && AGGREGATION
 **We could also do some calculations in sql**
 Get average age
-```bash
+```sql
     SELECT AVG(age) FROM customers;
 ```
 
 Count Age
-```bash 
+```sql 
     SELECT COUNT(age) FROM customers;
 ```
 Max Age
-```bash 
+```sql 
     SELECT MAX(age) FROM customers;
 ```
 MIN Age
-```bash 
+```sql 
     SELECT MIN(age) FROM customers;
 ```
 SUM Age
-```bash 
+```sql 
     SELECT SUM(age) FROM customers;
 ```
 AGGREGATE
-```bash
+```sql
     SELECT age, COUNT(age)
     FROM customers 
     WHERE age > 30
     GROUP BY age;
 ```
 This code returns the age of number of people greater or equal to 2
-```bash
+```sql
     SELECT age, COUNT(age)
     FROM customers 
     WHERE age > 30
@@ -316,7 +316,7 @@ This code returns the age of number of people greater or equal to 2
 ```
 CASING
 The UCASE function returns an uppercase while the LCASE function returns a lowercase
-```bash
+```sql
     SELECT LCASE(firstName), UCASE(lastName) FROM customers;
 ```
 
