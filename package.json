@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/codedhola/mysql-exercise/issues"
   },
-  "homepage": "https://github.com/codedhola/mysql-exercise#readme"
+  "homepage": "https://github.com/codedhola/mysql-exercise#readme",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
 }
