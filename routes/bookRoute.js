@@ -1,4 +1,4 @@
-const {getAllBooks, getBookById, postABook} = require("./../controllers/bookController")
+const {getAllBooks, getBookById, postABook, editABook} = require("./../controllers/bookController")
 const bookRoutes = function(req, res){
 
     // GET ALL BOOKS
@@ -19,12 +19,9 @@ const bookRoutes = function(req, res){
     }
 
      // UPDATE A BOOK
-     if(req.url === "/api/books/ID" && req.method === "PATCH"){
-        res.writeHead(200, { "Content-Type": "application/json"})
-        res.end(JSON.stringify({
-            status: "Successful",
-            message: "UPDATING BOOK"
-        }))
+     if(req.url.match(/\/api\/books\/([0-9]+)/) && req.method === "PATCH"){
+        const id = req.url.split("/")[3]
+        editABook(req, res, id)
     }
 
      // DELETE A SINGLE BOOK
