@@ -1,22 +1,16 @@
-const {bookController} = require("./../controllers/bookController")
+const {getAllBooks, getBookById} = require("./../controllers/bookController")
 const bookRoutes = function(req, res){
 
     // GET ALL BOOKS
     if(req.url === "/api/books" && req.method === "GET"){
-        res.writeHead(200, { "Content-Type": "application/json"})
-        res.end(JSON.stringify({
-            status: "Successful",
-            message: "This is a Book route"
-        }))
+        getAllBooks(req, res)
     }
 
     // GET A SINGLE BOOK
-    if(req.url === "/api/books/ID" && req.method === "GET"){
-        res.writeHead(200, { "Content-Type": "application/json"})
-        res.end(JSON.stringify({
-            status: "Successful",
-            message: "This is a Book route"
-        }))
+    if(req.url.match(/\/api\/books\/[0-9]/) && req.method === "GET"){
+        const urlId = req.url.split("/")[3]
+        console.log(urlId)
+        getBookById(req, res, urlId)
     }
 
      // CREATE A SINGLE BOOK
