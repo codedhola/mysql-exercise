@@ -1,4 +1,4 @@
-const {getAllBooks, getBookById, postABook, editABook} = require("./../controllers/bookController")
+const {getAllBooks, getBookById, postABook, editABook, deleteBookById} = require("./../controllers/bookController")
 const bookRoutes = function(req, res){
 
     // GET ALL BOOKS
@@ -25,12 +25,9 @@ const bookRoutes = function(req, res){
     }
 
      // DELETE A SINGLE BOOK
-     if(req.url === "/api/books/ID" && req.method === "DELETE"){
-        res.writeHead(204, { "Content-Type": "application/json"})
-        res.end(JSON.stringify({
-            status: "Successful",
-            message: "DELETING"
-        }))
+     if(req.url.match(/\/api\/books\/([0-9]+)/) && req.method === "DELETE"){
+        const id = req.url.split("/")[3]
+        deleteBookById(req, res, id)
     }
 }
 

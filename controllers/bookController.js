@@ -82,9 +82,23 @@ const editABook = (req, res, id) => {
   });
 };
 
+const deleteBookById = (req, res, id) => {
+    const query = "DELETE FROM books WHERE id = ?";
+    Connection.query(query, id, function (error, results) {
+      if (error) throw error;
+      res.writeHead(200, { "Content-Type": "application/json" }).end(
+        JSON.stringify({
+          status: "Successful",
+          results: results,
+        })
+      );
+    });
+  };
+
 module.exports = {
   getAllBooks,
   getBookById,
   postABook,
   editABook,
+  deleteBookById,
 };
