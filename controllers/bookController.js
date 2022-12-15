@@ -30,8 +30,34 @@ const getBookById = (req, res, id) => {
 
 }
 
+const postABook = (req, res) => {
+    let bodyData = "";
+    req.on("data", (chunks) => {
+        bodyData += JSON.stringify(chunks.toString());
+    })
+
+    req.on("end", () => {
+        const body = JSON.parse(bodyData)
+        console.log(JSON.parse(body))
+        const data = JSON.parse(body)
+
+        console.log(data)
+        const query = "INSERT INTO books SET ?"
+        Connection.query(query, data, function(error, results){
+            if(error) throw error;
+                res.writeHead(200, { "Content-Type": "application/json"})
+                .end(JSON.stringify({
+                    status: "Successful",
+                    results: results
+                }))
+        } )
+    })
+
+}
+
 
 module.exports = {
     getAllBooks,
-    getBookById
+    getBookById,
+    postABook,
 }

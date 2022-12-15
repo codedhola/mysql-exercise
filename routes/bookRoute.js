@@ -1,4 +1,4 @@
-const {getAllBooks, getBookById} = require("./../controllers/bookController")
+const {getAllBooks, getBookById, postABook} = require("./../controllers/bookController")
 const bookRoutes = function(req, res){
 
     // GET ALL BOOKS
@@ -15,11 +15,7 @@ const bookRoutes = function(req, res){
 
      // CREATE A SINGLE BOOK
      if(req.url === "/api/books" && req.method === "POST"){
-        res.writeHead(201, { "Content-Type": "application/json"})
-        res.end(JSON.stringify({
-            status: "Successful",
-            message: "CREATING A BOOK"
-        }))
+        postABook(req, res)
     }
 
      // UPDATE A BOOK
