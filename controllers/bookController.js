@@ -47,7 +47,7 @@ const postABook = (req, res) => {
     const query = "INSERT INTO books SET ?";
     Connection.query(query, data, function (error, results) {
       if (error) throw error;
-      res.writeHead(200, { "Content-Type": "application/json" }).end(
+      res.writeHead(201, { "Content-Type": "application/json" }).end(
         JSON.stringify({
           status: "Successful",
           results: results,
@@ -86,10 +86,9 @@ const deleteBookById = (req, res, id) => {
     const query = "DELETE FROM books WHERE id = ?";
     Connection.query(query, id, function (error, results) {
       if (error) throw error;
-      res.writeHead(200, { "Content-Type": "application/json" }).end(
+      res.writeHead(204, { "Content-Type": "application/json" }).end(
         JSON.stringify({
-          status: "Successful",
-          results: results,
+          status: "Successful"
         })
       );
     });
