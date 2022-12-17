@@ -5,8 +5,7 @@ const { DB_HOST, DB_USER, DB_PASSWORD } = require("../env")
   const Pool = mysql.createPool({
     host: DB_HOST,
     user: DB_USER,
-    password: DB_PASSWORD,
-    database: "my_sql_exercise"
+    password: DB_PASSWORD
   })
 
 

@@ -1,10 +1,10 @@
 const Book = require("./../model/bookModel")
+const errorResponse = require("./../services/errorResponse")
 
 const getAllBooks = async (req, res) => {
   try {
-    
     const response = await Book.findAll()
-    console.log(response)
+
     res.writeHead(200, { "Content-Type": "application/json"})
          .end(JSON.stringify({ 
           status: "Success",
@@ -12,26 +12,22 @@ const getAllBooks = async (req, res) => {
          }))
 
   } catch (err) {
-    console.log(err);
+    errorResponse(res, err)
   }
 };
 
 const getBookById = async (req, res, id) => {
-  const query = "SELECT * FROM books WHERE id = ?";
 
   try{
     const response = await Book.findById(id)
+    
     res.writeHead(200, { "Content-Type": "application/json"})
          .end(JSON.stringify({ 
           status: "Success",
           result: response
          }))
   }catch(err){
-    res.writeHead(400, { "Content-Type": "application/json"})
-       .end(JSON.stringify({ 
-        "status": "Failed",
-        "result": "Loading"
-       }))
+    errorResponse(res, err)
   }
 };
 
@@ -55,11 +51,7 @@ const postABook = async (req, res) => {
           result: response
          }))
     }catch(err){
-      res.writeHead(400, { "Content-Type": "application/json"})
-         .end(JSON.stringify({ 
-          status: "Failed",
-          result: "Loading"
-         }))
+      errorResponse(res, err)
     }
   });
 };
@@ -83,11 +75,7 @@ const editABook = async (req, res, id) => {
           result: response
          }))
     }catch(err){
-      res.writeHead(400, { "Content-Type": "application/json"})
-         .end(JSON.stringify({ 
-          "status": "Failed",
-          "result": "Loading"
-         }))
+      errorResponse(res, err)
     }
   });
 };
@@ -102,11 +90,7 @@ const deleteBookById = async (req, res, id) => {
           "result": response
          }))
     }catch(err){
-      res.writeHead(400, { "Content-Type": "application/json"})
-         .end(JSON.stringify({ 
-          "status": "Failed",
-          "result": "Loading"
-         }))
+      errorResponse(res, err)
     }
   };
 
