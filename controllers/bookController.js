@@ -2,7 +2,15 @@ const Book = require("./../model/bookModel")
 
 const getAllBooks = async (req, res) => {
   try {
-    const query = "SELECT * FROM books";
+    
+    const response = await Book.findAll()
+    console.log(response)
+    res.writeHead(200, { "Content-Type": "application/json"})
+         .end(JSON.stringify({ 
+          status: "Success",
+          result: response
+         }))
+
   } catch (err) {
     console.log(err);
   }
@@ -12,11 +20,12 @@ const getBookById = async (req, res, id) => {
   const query = "SELECT * FROM books WHERE id = ?";
 
   try{
+    const response = await Book.findById(id)
     res.writeHead(200, { "Content-Type": "application/json"})
-       .end(JSON.stringify({ 
-        "status": "Success",
-        "result": "Loading"
-       }))
+         .end(JSON.stringify({ 
+          status: "Success",
+          result: response
+         }))
   }catch(err){
     res.writeHead(400, { "Content-Type": "application/json"})
        .end(JSON.stringify({ 
@@ -32,25 +41,24 @@ const postABook = async (req, res) => {
     bodyData += JSON.stringify(chunks.toString());
   });
 
-  req.on("end", () => {
+  req.on("end", async () => {
     let parseBody = JSON.parse(bodyData)
     parseBody = JSON.parse(parseBody)
 
     let book = new Book(parseBody.name, parseBody.author, parseBody.genre, parseBody.price)
 
-    book.save()
-    console.log(book)
+   const response = await book.save()
     try{
       res.writeHead(200, { "Content-Type": "application/json"})
          .end(JSON.stringify({ 
-          "status": "Success",
-          "result": "Loading"
+          status: "Success",
+          result: response
          }))
     }catch(err){
       res.writeHead(400, { "Content-Type": "application/json"})
          .end(JSON.stringify({ 
-          "status": "Failed",
-          "result": "Loading"
+          status: "Failed",
+          result: "Loading"
          }))
     }
   });
@@ -62,18 +70,17 @@ const editABook = async (req, res, id) => {
     bodyData += JSON.stringify(chunks.toString());
   });
 
-  req.on("end", () => {
+  req.on("end", async () => {
     const body = JSON.parse(bodyData);
     const data = JSON.parse(body);
 
-
-    const query = "UPDATE books SET ? WHERE id = ?";
-
+    const response = await Book.EditBook(id, data)
+    console.log(response)
     try{
       res.writeHead(200, { "Content-Type": "application/json"})
          .end(JSON.stringify({ 
-          "status": "Success",
-          "result": "Loading"
+          status: "Success",
+          result: response
          }))
     }catch(err){
       res.writeHead(400, { "Content-Type": "application/json"})
@@ -86,13 +93,13 @@ const editABook = async (req, res, id) => {
 };
 
 const deleteBookById = async (req, res, id) => {
-    const query = "DELETE FROM books WHERE id = ?";
 
     try{
+      const response = await Book.deleteBook(id)
       res.writeHead(200, { "Content-Type": "application/json"})
          .end(JSON.stringify({ 
           "status": "Success",
-          "result": "Loading"
+          "result": response
          }))
     }catch(err){
       res.writeHead(400, { "Content-Type": "application/json"})

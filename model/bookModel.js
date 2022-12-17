@@ -17,9 +17,30 @@ class Book {
         return book;
     }
 
-    static findAll(){
-
+    static async findAll(){
+        let sql = `SELECT * FROM books`
+        const [book] = await Pool.execute(sql)
+        return book
     }
+
+    static async findById(id){
+        let sql = `SELECT * FROM books WHERE id = ${id}`
+        const [book] = await Pool.execute(sql)
+        return book[0]
+    }
+
+    static async EditBook(id, data){
+        let sql = `UPDATE books SET ? WHERE id = ${id}`
+        const [book] = await Pool.query(sql, [data])
+        return book
+    }
+
+    static async deleteBook(id){
+        let sql = `DELETE FROM books WHERE id = ${id}`
+        const [book] = await Pool.execute(sql)
+        return book
+    }
+
 
 }
 
