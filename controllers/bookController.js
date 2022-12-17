@@ -1,38 +1,57 @@
-const { Connection } = require("./../database/dbConfig");
+const Book = require("./../model/bookModel")
 
-const getAllBooks = (req, res) => {
+const getAllBooks = async (req, res) => {
   try {
     const query = "SELECT * FROM books";
-    Connection.query(query, function (error, results) {
-      if (error) throw error;
-      console.log(results);
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(
-        JSON.stringify({
-          status: "Successful",
-          message: results,
-        })
-      );
-    });
   } catch (err) {
     console.log(err);
   }
 };
 
-const getBookById = (req, res, id) => {
+const getBookById = async (req, res, id) => {
   const query = "SELECT * FROM books WHERE id = ?";
-  Connection.query(query, [id], function (error, results) {
-    if (error) throw error;
-    res.writeHead(200, { "Content-Type": "application/json" }).end(
-      JSON.stringify({
-        status: "Successful",
-        results: results,
-      })
-    );
+
+  try{
+    res.writeHead(200, { "Content-Type": "application/json"})
+       .end(JSON.stringify({ 
+        "status": "Success",
+        "result": "Loading"
+       }))
+  }catch(err){
+    res.writeHead(400, { "Content-Type": "application/json"})
+       .end(JSON.stringify({ 
+        "status": "Failed",
+        "result": "Loading"
+       }))
+  }
+};
+
+const postABook = async (req, res) => {
+  let bodyData = "";
+  req.on("data", (chunks) => {
+    bodyData += JSON.stringify(chunks.toString());
+  });
+
+  req.on("end", () => {
+
+
+    try{
+      res.writeHead(200, { "Content-Type": "application/json"})
+         .end(JSON.stringify({ 
+          "status": "Success",
+          "result": "Loading"
+         }))
+    }catch(err){
+      res.writeHead(400, { "Content-Type": "application/json"})
+         .end(JSON.stringify({ 
+          "status": "Failed",
+          "result": "Loading"
+         }))
+    }
   });
 };
 
-const postABook = (req, res) => {
+const editABook = async (req, res, id) => {
   let bodyData = "";
   req.on("data", (chunks) => {
     bodyData += JSON.stringify(chunks.toString());
@@ -40,58 +59,43 @@ const postABook = (req, res) => {
 
   req.on("end", () => {
     const body = JSON.parse(bodyData);
-    console.log(JSON.parse(body));
     const data = JSON.parse(body);
 
-    console.log(data);
-    const query = "INSERT INTO books SET ?";
-    Connection.query(query, data, function (error, results) {
-      if (error) throw error;
-      res.writeHead(201, { "Content-Type": "application/json" }).end(
-        JSON.stringify({
-          status: "Successful",
-          results: results,
-        })
-      );
-    });
-  });
-};
 
-const editABook = (req, res, id) => {
-  let bodyData = "";
-  req.on("data", (chunks) => {
-    bodyData += JSON.stringify(chunks.toString());
-  });
-
-  req.on("end", () => {
-    const body = JSON.parse(bodyData);
-    console.log(JSON.parse(body));
-    const data = JSON.parse(body);
-
-    console.log(data);
     const query = "UPDATE books SET ? WHERE id = ?";
-    Connection.query(query, [data, id], function (error, results) {
-      if (error) throw error;
-      res.writeHead(200, { "Content-Type": "application/json" }).end(
-        JSON.stringify({
-          status: "Successful",
-          results: results,
-        })
-      );
-    });
+
+    try{
+      res.writeHead(200, { "Content-Type": "application/json"})
+         .end(JSON.stringify({ 
+          "status": "Success",
+          "result": "Loading"
+         }))
+    }catch(err){
+      res.writeHead(400, { "Content-Type": "application/json"})
+         .end(JSON.stringify({ 
+          "status": "Failed",
+          "result": "Loading"
+         }))
+    }
   });
 };
 
-const deleteBookById = (req, res, id) => {
+const deleteBookById = async (req, res, id) => {
     const query = "DELETE FROM books WHERE id = ?";
-    Connection.query(query, id, function (error, results) {
-      if (error) throw error;
-      res.writeHead(204, { "Content-Type": "application/json" }).end(
-        JSON.stringify({
-          status: "Successful"
-        })
-      );
-    });
+
+    try{
+      res.writeHead(200, { "Content-Type": "application/json"})
+         .end(JSON.stringify({ 
+          "status": "Success",
+          "result": "Loading"
+         }))
+    }catch(err){
+      res.writeHead(400, { "Content-Type": "application/json"})
+         .end(JSON.stringify({ 
+          "status": "Failed",
+          "result": "Loading"
+         }))
+    }
   };
 
 module.exports = {
