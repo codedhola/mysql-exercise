@@ -5,7 +5,6 @@ const getAllBooks = (req, res) => {
     const query = "SELECT * FROM books";
     Connection.query(query, function (error, results) {
       if (error) throw error;
-      console.log(results);
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(
         JSON.stringify({
@@ -40,11 +39,9 @@ const postABook = (req, res) => {
 
   req.on("end", () => {
     const body = JSON.parse(bodyData);
-    console.log(JSON.parse(body));
     const data = JSON.parse(body);
-
-    console.log(data);
     const query = "INSERT INTO books SET ?";
+
     Connection.query(query, data, function (error, results) {
       if (error) throw error;
       res.writeHead(201, { "Content-Type": "application/json" }).end(
@@ -65,11 +62,9 @@ const editABook = (req, res, id) => {
 
   req.on("end", () => {
     const body = JSON.parse(bodyData);
-    console.log(JSON.parse(body));
     const data = JSON.parse(body);
-
-    console.log(data);
     const query = "UPDATE books SET ? WHERE id = ?";
+
     Connection.query(query, [data, id], function (error, results) {
       if (error) throw error;
       res.writeHead(200, { "Content-Type": "application/json" }).end(

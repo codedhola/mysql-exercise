@@ -1,13 +1,10 @@
 const http = require("http")
 const {bookRoutes} = require("./routes/bookRoute")
-const {userRoutes} = require("./routes/userRoute")
 
 const server = http.createServer((req, res) => {
     
     
     bookRoutes(req, res) // BOOK ROUTES
-    
-    userRoutes(req, res) // USER ROUTES
 
     if(req.url === "/api"){
         res.writeHead(404, { "Content-Type": "application/json"})
