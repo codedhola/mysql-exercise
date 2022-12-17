@@ -33,8 +33,13 @@ const postABook = async (req, res) => {
   });
 
   req.on("end", () => {
+    let parseBody = JSON.parse(bodyData)
+    parseBody = JSON.parse(parseBody)
 
+    let book = new Book(parseBody.name, parseBody.author, parseBody.genre, parseBody.price)
 
+    book.save()
+    console.log(book)
     try{
       res.writeHead(200, { "Content-Type": "application/json"})
          .end(JSON.stringify({ 
