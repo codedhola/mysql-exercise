@@ -2,9 +2,10 @@ const Pool = require('pg').Pool
 
 const DB = new Pool({
     user: 'postgres',
-    host: 'localhost',
-    database: 'test',
     password: 'developer',
+    database: 'test',
+    host: 'localhost',
+    port: 5432,
   })
 
 DB.connect((err, client, release) => {
@@ -12,7 +13,7 @@ DB.connect((err, client, release) => {
     return console.error('Error acquiring client', err.stack)
   }
   
-  console.log(connected )
+  console.log("connected" )
 })
 
 module.exports = DB
