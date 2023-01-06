@@ -52,7 +52,7 @@ const updateBook = async (req, res, next) => {
     const { name, author, genre, price} = req.body
     const id = req.params.id
     try{
-        const query = "UPDATE book SET name = $1, author = $2, genre = $3, price = $4 WHERE ID = $5;"
+        const query = "UPDATE book SET name = COALESCE($1, name), author = COALESCE($2, author), genre = COALESCE($3, genre), price = COALESCE($4, price) WHERE ID = $5;"
         const data = await DB.query(query, [name, author, genre, price, id])
         console.log(data.rows)
         if(data.rows == []) return res.status(404).json({ status: "Failed", data: "Not found"})
