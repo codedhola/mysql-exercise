@@ -1,31 +1,31 @@
 const DB = require("./../database/dbConfig")
+const query = require("./../services/queries")
+const response = require("./../services/response")
 
 const getBooks = async (req, res, next) => {
-    const query = "SELECT * FROM book;"
-    try{
-        const books = await DB.query(query)
     
-        res.status(200).json({
-            status: "Success",
-            books: books.rows
-            
-        })
-
+    try{
+        const books = await DB.query(query.getBooks)
+    
+        response.success(res, 200, books.rows)
     }catch(err){
         console.log(err)
+        response.failed(res, 400, err.message)
     }
 }
 
 const createBook = async(req, res, next) => {
     const { name, author, genre, price} = req.body;
     try{
-        const query = "INSERT INTO book(name, author, genre, price) VALUES($1, $2, $3, $4) RETURNING *;"
-        const data = DB.query(query, [name, author, genre, price])
+        const book = await DB.query(query.confirmBook, [name])
+        console.log(book.rows)
+        if(book.rows.length) return response.failed(res, 400, "Book has been created")
+        
+        const data = await DB.query(query.createBooks, [name, author, genre, price])
 
-        res.status(200).json({
-            status: "Success",
-            data: data.rows
-        })
+        // const data = await DB.query(query.createBooks, [name, author, genre, price])
+
+        response.success(res, 200, data.rows)
     }catch(err){
         console.log(err)
     }
@@ -37,14 +37,12 @@ const getABook = async (req, res, next) => {
         const query = "SELECT * FROM book WHERE ID = $1;"
         const data = await DB.query(query, [id])
         console.log(data.rows)
-        if(data.rows == []) return res.status(404).json({ status: "Failed", data: "Not found"})
+        if(data.rows.length) return response.failed(res, 404, "Data with given ID not found")
 
-        res.status(200).json({
-            status: "Success",
-            data: data.rows[0]
-        })
+        response.success(res, 200, data.rows[0])
     }catch(err){
         console.log(err)
+        response.failed(res, 500, "An Error occured")
     }
 }
 
@@ -52,17 +50,16 @@ const updateBook = async (req, res, next) => {
     const { name, author, genre, price} = req.body
     const id = req.params.id
     try{
-        const query = "UPDATE book SET name = COALESCE($1, name), author = COALESCE($2, author), genre = COALESCE($3, genre), price = COALESCE($4, price) WHERE ID = $5;"
-        const data = await DB.query(query, [name, author, genre, price, id])
-        console.log(data.rows)
-        if(data.rows == []) return res.status(404).json({ status: "Failed", data: "Not found"})
+        const confirmId = await DB.query(query.confirmBookId, [id])
+        console.log(confirmId.rows.length)
+        if(!confirmId.rows.length) return response.failed(res, 404, "Data with given ID not found")
 
-        res.status(200).json({
-            status: "Success",
-            data: data
-        })
+        const data = await DB.query(query.updateBook, [name, author, genre, price, id])
+
+        response.success(res, 200, data.rows[0])
     }catch(err){
         console.log(err)
+        response.failed(res, 500, "An Error occured")
     }
 }
 
@@ -70,13 +67,12 @@ const deleteBook = async (req, res, next) => {
     const id = req.params.id
     try{
         const query = "DELETE FROM book WHERE ID = $1;"
-
         await DB.query(query, [id])
-        res.status(204).json({
-            status: "Success"
-        })
+
+        response.success(res, 200, "")
     }catch(err){
         console.log(err)
+        response.failed(res, 500, "An Error occured")
     }
 }
 
