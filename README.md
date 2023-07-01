@@ -226,6 +226,106 @@ WHERE last_name ~ '[w-z]';
 ```
 
 
-
 ---
 
+
+**VIEWS**
+Views are select statements thats result is stored in your database. Let's create a view that contains our main purchase order info.
+```sql
+CREATE VIEW purchase_order_overview AS
+SELECT sales_order.purchase_order_number, customer.company, 
+sales_item.quantity, product.supplier, product.name, item.price, 
+--Can’t use total if you want this to be updated Fix Below
+(sales_item.quantity * item.price) AS Total,
+--Remove concat if you want this to be updatable 
+CONCAT(sales_person.first_name, ' ', sales_person.last_name) AS Salesperson
+FROM sales_order     -- Join some tables
+JOIN sales_item
+ON sales_item.sales_order_id = sales_order.id    -- Tables go together by joining on sales order id
+-- Any time you join tables you need to find foreign and primary keys that match up
+JOIN item
+ON item.id = sales_item.item_id    -- Join item as well using matching item id
+JOIN customer
+ON sales_order.cust_id = customer.id    // Join customer using customer ids
+JOIN product
+ON product.id = item.product_id
+JOIN sales_person
+ON sales_person.id = sales_order.sales_person_id
+ORDER BY purchase_order_number;
+
+-- When data in the database is updated so is the view. You can use the view in all the same ways you can a regular table. If you want it to be updatable though it can’t include DISTINCT, UNION, Aggregate Functions, GROUP BY or HAVING.
+
+-- Drop a View
+DROP VIEW purchase_order_overview;
+
+```
+---
+
+---
+**FUNCTION**
+You can write programs that are similar to traditional programming languages. There are different types of stored programs. Stored Functions can be executed by SQL statements. 
+After creating the function they appear in the functions folder. You can see info on the function by using properties on the function.
+```sql
+CREATE OR REPLACE FUNCTION fn_add(int, int) 
+returns INT 
+as  'SELECT $1 + $2;'
+LANGUAGE SQL;
+
+-- BEST WAY OF WRITING IT IS USING THE $$ SYNMBOL I.E = >
+
+CREATE OR REPLACE FUNCTION fn_minus(int, int) 
+returns INT 
+as  
+$body$
+SELECT $1 - $2;
+$body$
+LANGUAGE SQL;
+
+
+-- TO MAKE USE OF THE FUNCTION THE CALL IT USING THE 'SELECT'
+
+SELECT fn_minus(25, 10);
+
+-- Functions that Return Void
+-- Check if sales_person has a state assigned and if not change it to ‘PA’
+CREATE OR REPLACE FUNCTION fn_update_employee_state() 
+RETURNS void as
+$body$
+	UPDATE sales_person
+	SET state = 'PA'
+	WHERE state is null
+$body$
+LANGUAGE SQL
+
+
+-- Get Maximum Product Price
+CREATE OR REPLACE FUNCTION fn_max_product_price() 
+RETURNS numeric as
+$body$
+	SELECT MAX(price)
+	FROM item
+$body$
+LANGUAGE SQL
+
+
+-- Named Parameters
+-- Get Number of Customers from Texas using a Named Parameter
+CREATE OR REPLACE FUNCTION fn_get_number_customers_from_state(state_name char(2)) 
+RETURNS numeric as
+$body$
+	SELECT count(*)
+	FROM customer
+	WHERE state = state_name;	
+$body$
+LANGUAGE SQL;
+
+SELECT fn_get_number_customers_from_state('TX');
+
+
+--Get names and phone number using function results
+
+SELECT first_name, last_name, phone
+FROM fn_get_employees_location('CA');
+
+```
+---
