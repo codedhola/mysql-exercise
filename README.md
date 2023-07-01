@@ -329,3 +329,164 @@ FROM fn_get_employees_location('CA');
 
 ```
 ---
+
+
+**PLPGSQL**  
+FUNCTION DECLARATION IN POSTGRES
+
+-- ----
+
+```sql
+-- Get Product Price by Name
+SELECT item.price
+FROM item
+NATURAL JOIN product 
+CREATE OR REPLACE FUNCTION fn_add(int, int) 
+returns INT 
+as  'SELECT $1 + $2;'
+LANGUAGE SQL;
+
+-- BEST WAY OF WRITING IT IS USING THE $$ SYNMBOL I.E = >
+
+CREATE OR REPLACE FUNCTION fn_minus(int, int) 
+returns INT 
+as  
+$body$
+SELECT $1 - $2;
+$body$
+LANGUAGE SQL;
+
+
+-- TO MAKE USE OF THE FUNCTION THE CALL IT USING THE 'SELECT'
+
+SELECT fn_minus(25, 10);
+
+-- Functions that Return Void
+-- Check if sales_person has a state assigned and if not change it to ‘PA’
+CREATE OR REPLACE FUNCTION fn_update_employee_state() 
+RETURNS void as
+$body$
+	UPDATE sales_person
+	SET state = 'PA'
+	WHERE state is null
+$body$
+LANGUAGE SQL
+
+
+-- Get Maximum Product Price
+CREATE OR REPLACE FUNCTION fn_max_product_price() 
+RETURNS numeric as
+$body$
+	SELECT MAX(price)
+	FROM item
+$body$
+LANGUAGE SQL
+
+
+-- Named Parameters
+-- Get Number of Customers from Texas using a Named Parameter
+CREATE OR REPLACE FUNCTION fn_get_number_customers_from_state(state_name char(2)) 
+RETURNS numeric as
+$body$
+	SELECT count(*)
+	FROM customer
+	WHERE state = state_name;	
+$body$
+LANGUAGE SQL;
+
+SELECT fn_get_number_customers_from_state('TX');
+
+
+--Get names and phone number using function results
+
+SELECT first_name, last_name, phone
+FROM fn_get_employees_location('CA');
+
+```
+---
+
+#### ADVANCEDDDDDD
+**PLPGSQL**
+
+---
+Get Product Price by Name
+
+```sql
+SELECT item.price
+FROM item
+NATURAL JOIN product
+WHERE product.name = 'Grandview';
+
+CREATE OR REPLACE FUNCTION fn_get_price_product_name(prod_name varchar) 
+RETURNS numeric AS
+$body$
+	BEGIN
+	
+	RETURN item.price
+	FROM item
+	NATURAL JOIN product
+	WHERE product.name = prod_name;
+	
+	END
+$body$
+LANGUAGE plpgsql
+
+
+
+CREATE OR REPLACE FUNCTION fn_get_price_product_name(prod_name varchar) 
+RETURNS numeric AS
+$body$
+	BEGIN
+	
+	RETURN item.price
+	FROM item
+	NATURAL JOIN product
+	WHERE product.name = prod_name;
+	
+	END
+$body$
+LANGUAGE plpgsql
+
+
+SELECT fn_get_price_product_name('Grandview');
+
+
+-- -----------------------------------------------------
+
+-- Create VARIABLES in FUNCTIONS
+CREATE OR REPLACE FUNCTION fn_get_sum(val1 int, val2 int) 
+RETURNS int AS
+$body$
+	-- Put variables here
+	DECLARE
+		ans int;
+	BEGIN
+		ans := val1 + val2;
+		RETURN ans;
+	END;
+$body$
+LANGUAGE plpgsql
+
+SELECT fn_get_sum(4,5);
+
+-- ------------------------------------------------------------------------------
+
+##### Assign Variable Value with a Query
+-- Get random number and assign it to a variable
+CREATE OR REPLACE FUNCTION fn_get_random_number(min_val int, max_val int) 
+RETURNS int AS
+$body$
+	--Put variables here
+	DECLARE
+		rand int;
+	BEGIN
+		SELECT random()*(max_val - min_val) + min_val INTO rand;
+		RETURN rand;
+	END;
+$body$
+LANGUAGE plpgsql
+
+SELECT fn_get_random_number(1, 5);
+```
+
+
