@@ -319,3 +319,23 @@ ORDER BY 1;
 
 
 -- -------------------------------------------------------------------------------------
+
+
+
+-- THEY ARE 3 INSTANCE WHERE WE USE A SUB QUERY
+
+
+-- 1). THE 'SELECT' STATEMENT
+SELECT name, description, (SELECT AVG(effect)FROM herb) FROM herb; -- A SUBQUERY IN A SELECT STATEMENT
+
+-- 2). THE 'FROM' STATEMENT
+SELECT * FROM herb;
+SELECT name, description FROM (SELECT * FROM herb) herb;
+
+-- 3) THE 'WHERE' CLAUSE
+SELECT * FROM herb WHERE name IN (SELECT name FROM herb WHERE name LIKE '%se%');
+
+
+-- ---------------------------------------------------------------------------------------------
+
+
